@@ -1,0 +1,39 @@
+
+library(dplyr)
+library(lubridate)
+library(stringr)
+
+## Carregamento dos dados
+dados <- read.csv("DADOS/Pokemon_full.csv")
+head(dados) #? vê as primeiras linhas de dados
+getwd()
+
+
+#? Exemplo: contar o número de linhas de dados
+nrow(dados) #conta a quantidade de linhas dos dados
+dados %>% nrow()
+dados %>% nrow(.)
+
+
+#### ? Algumas funções da biblioteca dplyr ####
+#? A função filter seleciona linhas com base em um teste
+filter(dados, type == "grass") ##Seleciona linhas de acordo com alguma categoria
+
+#? podemos usar o seguinte comando também
+dados %>% filter(type == "grass")
+
+#TODO Vamos filtrar todos os pokemons do tipo fogo ou água
+df_fogo_e_agua <- dados %>%  filter(type == "fire" | type == "water")
+
+#TODO Vamos filtrar todos os pokemons que tem  "fly"
+dados %>%  filter(grepl("fly", name)) #Separa em dados
+
+##### ATIVIDADE DA SEMANA (13.04.2023) ####
+#TODO Vamos filtrar todos os pokemons que tem  "bee" ou "saur"
+
+df_bee <- dados %>%  filter(grepl("bee", name)) #Separação dos dados individualmente
+df_saur <- dados %>%  filter(grepl("saur", name)) #Separação dos dados individualmente
+
+padrao <- "saur|bee" ## Criando uma variavel
+df_bee_saur <- dados %>%  filter(grepl(padrao, name)) ##Separação dos dados em conjunto
+
