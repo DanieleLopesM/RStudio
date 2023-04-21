@@ -1,0 +1,14 @@
+library(dplyr)
+library(lubridate)
+library(stringr)
+
+## Carregamento dos dados
+dados <- read.csv("DADOS/Pokemon_full.csv")
+
+######### TODO criar uma coluna com a transformação Z-score para altura
+dados %>%
+  group_by(type) %>%
+  mutate(
+    z.score = scale(height)
+  ) %>% 
+    select(-secundary.type, -attack) -> df ## EXCLUI DUAS COLUNAS PARA QUE A "z.score" FICASSE APARENTE
