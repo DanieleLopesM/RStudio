@@ -1,0 +1,31 @@
+################### ATIVIDADE COM OS DADOS DE POKEMON ##########################
+df_means <- rbind(df_means, novo_grupo)
+
+## right_join
+df <- right_join(dados, df_means, by = "type")
+View(df)
+df %>% 
+  filter(type == "bug") %>%  head(15)
+df %>% tail()
+
+################################################################################
+#### ATIVIDADE COM OS NOVOS DADOS SOBRE FILMES
+## LEITURA DOS DADOS
+dados <- readr::read_rds("imdb.rds")
+
+library(tidyr)
+
+
+dados <- readr::read_rds("imdb.rds")
+View(dados)
+head(dados)
+names(dados)
+
+df <- dados %>% 
+  select(titulo, orcamento, receita, receita_eua)
+df
+
+# correlação cor()
+correlacao <- cor(dados[,c(9, 10, 11)])
+
+
