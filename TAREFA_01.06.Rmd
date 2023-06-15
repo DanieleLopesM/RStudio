@@ -1,0 +1,75 @@
+---
+title: "TAREFA 01.06.2023"
+author: "Daniele Lopes"
+date: "2023-06-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Cabeçalho 1
+
+Este arquivo tem como objetivo principal mostrar o uso do ggplot2 para criação de gráficos e boas práticas.
+
+## GGPLOT2
+
+Vamos carregar a biblioteca ggplot2 e outros pacotes
+
+```{r}
+library(ggplot2)
+#library(tidyr)
+library(dplyr)
+```
+
+## Lendo o conjunto de dados
+
+```{r}
+dados <- read.csv("./Dados/Pokemon_full.csv")
+head(dados)
+```
+
+### Configurando o Gráfico
+
+```{r}
+## LIÇAO DIA 01/06
+
+df <- dados %>%
+  group_by(type) %>% 
+  summarise(
+    Altura = mean(height),
+    Peso = mean(weight)
+  ) 
+
+fator <- max(df$Peso)/max(df$Altura)
+fator
+
+df$Altura <- df$Altura*fator
+
+df %>% 
+  tidyr::pivot_longer(cols = c("Altura", "Peso"), names_to = "tipo", values_to = "media") %>% 
+  ggplot()+
+    #
+    geom_col(aes(x = type, y = media, color = tipo, fill = tipo), position = position_dodge2())+
+  scale_y_continuous(
+    
+    # Features of the first axis
+    name = "Média do peso",
+    
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~./fator, name="Média do altura"),
+    expand = c(0,0)
+  )+
+  scale_color_brewer(palette = "Set1", name = "Médias")+
+  scale_fill_brewer(palette = "Set1", name = "Médias")+
+  theme_bw()+
+  labs(title = "Gráfico de Dados dos Pokemon")+
+  labs(x = NULL) +  # Remove a legenda do eixo x
+  
+  theme(
+    axis.title = element_text(size = 15, face = "bold"),
+    axis.text = element_text(size = 12),
+    axis.text.x = element_text(angle = 45, hjust = 1),  #Rotação dos rótulos das colunas
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5)
+  )
